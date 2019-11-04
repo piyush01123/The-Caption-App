@@ -1,0 +1,9 @@
+
+Flask
+Jinja2
+Werkzeug
+gunicorn
+tensorflow==2.0.0
+numpy
+matplotlib
+Pillow
