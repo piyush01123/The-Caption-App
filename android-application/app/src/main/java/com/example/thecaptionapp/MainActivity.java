@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Button cam_btn;
     private ImageView cap_img;
     private TextView tv;
+    private View pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.textView);
         cap_img.setImageResource(R.mipmap.git_img);
         tv.setText("Caption appears here");
+        pb = (View) findViewById(R.id.progbar);
+        pb.setVisibility(View.GONE);
 
         cam_btn.setOnClickListener(
                 new View.OnClickListener() {
@@ -161,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
+        pb.setVisibility(View.VISIBLE);
         if(resultCode == RESULT_OK) {
             Bitmap bp=null;
 
@@ -215,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     Log.d("volleyResponse", response.toString());
                     tv.setText("Generated Caption: "+response.toString());
-
+                    pb.setVisibility(View.GONE);
                 }
             }, new Response.ErrorListener() {
                 @Override
