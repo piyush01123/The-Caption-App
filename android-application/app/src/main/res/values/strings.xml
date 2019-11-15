@@ -10,4 +10,9 @@
         <u>Developed by</u>:  Piyush Singh \n\n
         <u>Connect</u>:  <a href="mailto:piyushsinghkgpian@gmail.com">Email</a>, <a href="https://github.com/piyush-kgp">Github</a>, <a href="https://piyush-kgp.github.io">Personal Website</a>
     </string>
+    <string name="msgtslow">
+        New session usage is typically slow. \n\n
+        Speed is guaranteed to increase after running this test.\n\n
+        You can verify that successive tests are much faster than first test.
+    </string>
 </resources>

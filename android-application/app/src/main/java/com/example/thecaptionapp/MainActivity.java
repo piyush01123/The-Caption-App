@@ -97,8 +97,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.main_app) {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, About.class);
+            startActivity(intent);
+            return true;
+        }
+        if (id == R.id.tooSlow) {
+            Intent intent = new Intent(this, TooSlow.class);
             startActivity(intent);
             return true;
         }

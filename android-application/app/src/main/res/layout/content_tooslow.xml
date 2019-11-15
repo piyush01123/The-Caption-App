@@ -5,25 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context=".About"
+    tools:showIn="@layout/activity_tooslow">
 
-    <ImageView
-        android:id="@+id/capturedImage"
-        android:layout_width="250dp"
-        android:layout_height="300dp"
-        android:paddingTop="50dp"
+    <TextView
+        android:id="@+id/tvtooslow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:paddingHorizontal="25dp"
+        android:text="@string/msgtslow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        android:textAllCaps="false"
+        android:fontFamily="monospace"
+        android:textSize="15dp"/>
     <Button
-        android:id="@+id/btnCamera"
+        android:id="@+id/testServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="321dp"
-        android:text="Choose Image to Caption"
+        android:layout_marginTop="250dp"
+        android:text="Run Test"
         android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -31,27 +35,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progbar"
+        android:id="@+id/progbar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="370dp"
+        android:layout_marginTop="300dp"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/testRes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="421dp"
+        android:layout_marginTop="350dp"
         android:fontFamily="monospace"
-        android:text="Caption appears here  "
+        android:text=""
         android:textAllCaps="false"
         android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
