@@ -41,6 +41,7 @@ public class TooSlow extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("onCreate", "all ok");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tooslow);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -112,7 +113,11 @@ public class TooSlow extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
+        if (id == R.id.bonus) {
+            Intent intent = new Intent(this, BonusActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 

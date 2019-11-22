@@ -52,7 +52,11 @@ public class About extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
-
+        if (id == R.id.bonus) {
+            Intent intent = new Intent(this, BonusActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

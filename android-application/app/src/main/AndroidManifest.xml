@@ -16,8 +16,12 @@
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
+            android:name=".BonusActivity"
+            android:label="Bonus !"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".TooSlow"
-            android:label="TooSlow"
+            android:label="Too Slow?"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".MainActivity"

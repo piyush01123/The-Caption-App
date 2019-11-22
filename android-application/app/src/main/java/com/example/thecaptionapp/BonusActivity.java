@@ -8,6 +8,23 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.text.method.LinkMovementMethod;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -18,26 +35,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.os.Environment;
-import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -51,19 +48,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class BonusActivity extends AppCompatActivity {
 
     private Button cam_btn;
     private ImageView cap_img;
     private TextView tv;
-    private View pb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("", "This app");
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bonus);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -72,13 +66,11 @@ public class MainActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        cam_btn = (Button) findViewById(R.id.btnCamera);
-        cap_img = (ImageView) findViewById(R.id.capturedImage);
-        tv = (TextView) findViewById(R.id.textView);
+        cam_btn = (Button) findViewById(R.id.btnCameraBonus);
+        cap_img = (ImageView) findViewById(R.id.capturedImageBonus);
+        tv = (TextView) findViewById(R.id.textViewBonus);
         cap_img.setImageResource(R.mipmap.git_img);
-        tv.setText("Caption appears here");
-        pb = (View) findViewById(R.id.progbar);
-        pb.setVisibility(View.GONE);
+        tv.setText("On-Device Image Classification");
 
         cam_btn.setOnClickListener(
                 new View.OnClickListener() {
@@ -89,14 +81,12 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -106,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_settings) {
-            Log.d("bout", "About LINK");
             Intent intent = new Intent(this, About.class);
             startActivity(intent);
             return true;
@@ -117,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.bonus) {
-            Log.d("Bonus", "BONUS LINK");
             Intent intent = new Intent(this, BonusActivity.class);
             startActivity(intent);
             return true;
@@ -125,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     private  void openCamera(){
         if (!all_permissions_available()) return;
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
@@ -184,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        pb.setVisibility(View.VISIBLE);
         if(resultCode == RESULT_OK) {
             Bitmap bp=null;
 
@@ -202,77 +190,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             cap_img.setImageBitmap(bp);
-
-            String root = Environment.getExternalStorageDirectory().toString();
-            File mediaStorageDir = new File(root+"/imgs");
-            if (mediaStorageDir.exists()) Log.d("dir", "Dir exists"); else Log.d("dir", "Dir dnexists");
-            if (! mediaStorageDir.exists()) mediaStorageDir.mkdirs();
-            if (mediaStorageDir.exists()) Log.d("dir", "Dir exists"); else Log.d("dir", "Dir dnexists");
-
-            String fname = "shot_" + LocalDateTime.now().toString() + ".png";
-            File mediaFile = new File(mediaStorageDir.getPath() + File.separator + fname);
-
-            try {
-                FileOutputStream out = new FileOutputStream(mediaFile);
-                bp.compress(Bitmap.CompressFormat.PNG, 90, out);
-                out.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Log.d("Image Path", mediaFile.getAbsolutePath().toString());
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bp.compress(Bitmap.CompressFormat.PNG, 90, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-            Log.d("BASE64", encoded.toString());
-
-
-            String cap_url = "https://image-caption-app.herokuapp.com/caption_b64";
-
-            Map< String,String> m = new HashMap<String, String>();
-            m.put("b64string", encoded.toString());
-            JSONObject jo = new JSONObject(m);
-            final String rb = jo.toString();
-
-            StringRequest sreq = new StringRequest(Request.Method.POST, cap_url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.d("volleyResponse", response.toString());
-                    tv.setText("Generated Caption: "+response.toString());
-                    pb.setVisibility(View.GONE);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("VOLLEY", error.toString());
-                }
-            }) {
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return rb == null ? null : rb.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", rb, "utf-8");
-                        return null;
-                    }
-                }
-
-            };
-            int MY_SOCKET_TIMEOUT_MS=100000; //100 seconds timeout
-            sreq.setRetryPolicy(new DefaultRetryPolicy(
-                    MY_SOCKET_TIMEOUT_MS,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue queue = Volley.newRequestQueue(this);
-            queue.add(sreq);
+            tv.setText("Image Label here");
 
         }
 
     }
+
 
 }
